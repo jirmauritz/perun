@@ -1,5 +1,6 @@
 package cz.metacentrum.perun.scim.api.entities;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -10,6 +11,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 @EqualsAndHashCode
 @ToString
+@Data
 public class Resource {
 
     @JsonProperty

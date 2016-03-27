@@ -16,6 +16,8 @@ import javax.validation.Valid;
 import javax.ws.rs.core.Response;
 
 import static cz.metacentrum.perun.scim.api.SCIMDefaults.CONTENT_TYPE;
+import cz.metacentrum.perun.scim.api.mapper.SCIMMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Sona Mastrakova <sona.mastrakova@gmail.com>
@@ -25,6 +27,9 @@ public class UserResourceEndpointController {
     private final Logger log = LoggerFactory.getLogger(UserResourceEndpointController.class);
     private final PerunSession session;
     private final PerunBl perunBl;
+    
+    @Autowired
+    SCIMMapper mapper;
 
     public UserResourceEndpointController(PerunSession session) {
         this.session = session;
@@ -49,7 +54,7 @@ public class UserResourceEndpointController {
         try {
             User perunUser = perunBl.getUsersManagerBl().getUserById(session, Integer.parseInt(identifier));
             // TODO: create mapper
-            // return mapper.map(perunUser, UserDto.class);
+            // return mapper.mapTo(perunUser, UserDto.class);
             return Response.ok().type(CONTENT_TYPE).build();
         } catch (InternalErrorException ex) {
             log.warn("Internal exception occured while getting user with id {}.", identifier);

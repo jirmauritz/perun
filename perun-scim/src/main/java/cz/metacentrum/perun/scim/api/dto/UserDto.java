@@ -14,8 +14,8 @@ import lombok.Data;
  *
  * @author Sona Mastrakova <sona.mastrakova@gmail.com>
  */
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @Data
 public class UserDto extends Resource {
 

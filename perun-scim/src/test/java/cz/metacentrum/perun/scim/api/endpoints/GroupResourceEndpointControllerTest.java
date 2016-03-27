@@ -51,5 +51,15 @@ public class GroupResourceEndpointControllerTest extends AbstractSCIMTest {
     public void testGetGroup() throws Exception {
 //        createVos();
 //        createGroups();
+
+        Response result = restApi.process(session, "GET", BASE_PATH + GROUPS_PATH, "2", null);
+
+        // TODO
+        GroupDto expectedGroup = new GroupDto();
+        expectedGroup.setDisplayName(group1Vo1.getName());
+        expectedGroup.setId(Long.valueOf(group1Vo1.getId()));
+
+        GroupDto actualGroup = (GroupDto) result.getEntity();
+        assertEquals("groups should equal", expectedGroup, actualGroup);
     }
 }

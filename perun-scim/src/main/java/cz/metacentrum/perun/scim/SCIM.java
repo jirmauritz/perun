@@ -18,8 +18,10 @@ import cz.metacentrum.perun.scim.api.endpoints.ResourceTypesEndpointController;
 import cz.metacentrum.perun.scim.api.endpoints.SchemasEndpointController;
 import cz.metacentrum.perun.scim.api.endpoints.ServiceProviderConfigsEndpointController;
 import cz.metacentrum.perun.scim.api.endpoints.UserResourceEndpointController;
+import cz.metacentrum.perun.scim.api.mapper.SCIMMapper;
 
 import javax.ws.rs.core.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,6 +36,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class SCIM {
 
+    @Autowired
+    SCIMMapper mapper;
+    
     public Response process(PerunSession session, String methodType, String path,
             String pathVariable, Object requestBody) throws SCIMException {
 
@@ -42,7 +47,7 @@ public class SCIM {
         }
 
         if (path.contains(BASE_PATH + USERS_PATH)) {
-            // TODO: mapper.map(requestBody, UserDto.class)
+            // TODO: mapper.mapTo(requestBody, UserDto.class)
 
             UserResourceEndpointController controller
                     = new UserResourceEndpointController(session);
@@ -62,7 +67,7 @@ public class SCIM {
         }
 
         if (path.contains(BASE_PATH + GROUPS_PATH)) {
-            // TODO: mapper.map(requestBody, GroupDto.class)
+            // TODO: mapper.mapTo(requestBody, GroupDto.class)
 
             GroupResourceEndpointController controller
                     = new GroupResourceEndpointController(session);

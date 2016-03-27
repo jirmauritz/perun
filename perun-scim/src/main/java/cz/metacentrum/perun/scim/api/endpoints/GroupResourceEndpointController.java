@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import javax.validation.Valid;
 import javax.ws.rs.core.Response;
 import static cz.metacentrum.perun.scim.api.SCIMDefaults.CONTENT_TYPE;
+import cz.metacentrum.perun.scim.api.mapper.SCIMMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Sona Mastrakova <sona.mastrakova@gmail.com>
@@ -24,6 +26,9 @@ public class GroupResourceEndpointController {
     private final Logger log = LoggerFactory.getLogger(GroupResourceEndpointController.class);
     private final PerunSession session;
     private final PerunBl perunBl;
+    
+    @Autowired
+    SCIMMapper mapper;
 
     public GroupResourceEndpointController(PerunSession session) {
         this.session = session;
@@ -48,7 +53,7 @@ public class GroupResourceEndpointController {
         try {
             Group perunGroup = perunBl.getGroupsManagerBl().getGroupById(session, Integer.parseInt(identifier));
             // TODO: create mapper
-            // return mapper.map(perunGroup, GroupDto.class);
+            // return mapper.mapTo(perunGroup, GroupDto.class);
             return Response.ok().type(CONTENT_TYPE).build();
         } catch (InternalErrorException ex) {
             log.warn("Internal exception occured while getting group with id {}.", identifier);

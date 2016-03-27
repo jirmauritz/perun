@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static cz.metacentrum.perun.scim.api.SCIMDefaults.BASE_PATH;
 import static cz.metacentrum.perun.scim.api.SCIMDefaults.USERS_PATH;
+import cz.metacentrum.perun.scim.api.mapper.SCIMMapper;
 import javax.ws.rs.core.Response;
 import static junit.framework.TestCase.assertEquals;
 
@@ -18,13 +19,16 @@ public class UserResourceEndpointControllerTest extends AbstractSCIMTest {
     @Autowired
     SCIM restApi;
 
+    @Autowired
+    SCIMMapper mapper;
+
     @Test
     public void testCreateUser() throws SCIMException {
         Response result = restApi.process(session, "POST", BASE_PATH + USERS_PATH, null, new UserDto());
 
         assertEquals("api should return HTTP status 405", 405, result.getStatus());
     }
-    
+
     @Test(expected = NullPointerException.class)
     public void testCreateNullUser() throws SCIMException {
         restApi.process(session, "POST", BASE_PATH + USERS_PATH, null, null);
@@ -36,7 +40,7 @@ public class UserResourceEndpointControllerTest extends AbstractSCIMTest {
 
         assertEquals("api should return HTTP status 405", 405, result.getStatus());
     }
-    
+
     @Test(expected = NullPointerException.class)
     public void testUpdateNullUser() throws SCIMException {
         restApi.process(session, "PUT", BASE_PATH + USERS_PATH, "5", null);
@@ -52,6 +56,16 @@ public class UserResourceEndpointControllerTest extends AbstractSCIMTest {
     @Test
     public void testGetUser() throws Exception {
 //        createUsers();
+
+        Response result = restApi.process(session, "GET", BASE_PATH + USERS_PATH, "2", null);
+
+        // TODO
+        UserDto expectedUser = new UserDto();
+        expectedUser.setDisplayName(user2.getDisplayName());
+        expectedUser.setId(Long.valueOf(user2.getId()));
+        
+        UserDto actualUser = (UserDto) result.getEntity();
+        assertEquals("users should equal", expectedUser, actualUser);
     }
 
 }
